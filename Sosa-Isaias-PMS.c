@@ -3,87 +3,139 @@
 //Professor Eric Freudenthal
 //Project 1 - Personnel-Management-System
 
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <malloc.h>
+#include <string.h>
 
 
-int main(){
-
-  printf("Hello");
-
-  return 0;
-
-}
-
-/* node */
+// Node
 
 struct node{
 
-  int value;
+  char *ename;
   struct node *left, *right;
-};
+}*root;
 
-/* newNode */
+//Find
 
-struct node* newNode(int number){
+void find(char *str, struct node **p, struct node **l){
 
-  struct node *temp = (struct node *) malloc(sizeof(struct node));
-  temp -> value = number;
-  temp -> left = temp-> right = NULL;
-  return temp;
-}
+  struct node *ptr, *ptrsave;
 
-/* inorder */
-
-void inorder(struct node *root){
-
-  if(root != NULL){
-    inorder(root->left);
-    printf("%d\n", root->value);
-    inorder(root->right);
+  if(root = NULL){
+      *l = NULL;
+      *p = NULL;
+      return;
+  }
+  if(!(strcmp(str, root -> ename))){
+    *l = root;
+    *p = NULL;
+    return;
   }
   
-}
-/* insert */
+  if(strcmp(str, root -> ename)<0)
+    ptr = root -> left;
+  else
+    ptr = root -> right;
 
-struct node* insert(struct node* node, int number){
+  ptrsave = root;
 
-  /*if the tree is empty return a new node */
-  if(node = NULL) return newNode(number);
+  while(ptr != NULL){
 
-  /*otherwise traverse down the key */
-  if(number < node->value)
-    node->left = insert(node -> left, number);
-  else if(number > node->value)
-    node->right = insert(node->right, number);
+    if(!(strcmp(str, ptr -> ename))){
+      *l = ptr;
+      *p =ptrsave;
+      return;
+    }
 
-  /*return the node pointer without any changes */
-  return node;
-}
-
+    ptrsave = ptr;
+    
+    if(strcmp(str, ptr -> ename)<0)
+       ptr = ptr -> left;
+    else
+       ptr = ptr -> right;
   
+  }
+
+  *l = NULL;
+  *p = ptrsave;
+
+}
+
+
+
+// Insert
+
+void insert(char *str){
+
+  struct node *parent, *location, *temp;
+
+  find(str, &parent, &location);
+
+  temp = malloc(sizeof(struct node));
+  temp -> ename = strdup(str);
+  temp -> left = NULL;
+  temp -> right = NULL;
+
+  if(parent == NULL){
+    root = temp;
+  }
+  else if(strcmp(str, parent -> ename) < 0){
+    parent -> left = temp;
+  }
+  else{
+    parent -> right = temp;
+  }
+
+}
+
+// Display
+
+void display(struct node *ptr){
+
+   if(root = NULL){
+     printf("Tree is empty");
+     return;
+   }
+
+   if(ptr != NULL){
+     display(ptr -> left);
+     printf("%s -> ", ptr -> ename);
+     display(ptr -> right);
+    }
+
+}
+
+// Main
+
 int main(){
 
-  /*Let us create the following BST
-                 50
-		/  \
-	      30    70
-	     /  \  /  \
-	     20  40 60  80 */
+   root = NULL;
+   char str[20];
+   char a;
 
-  struct node *root = NULL;
-  root = insert(root, 50);
-  insert(root, 30);
-  insert(root, 20);
-  insert(root, 40);
-  insert(root, 70);
-  insert(root, 60);
-  insert(root, 80);
+printf("Please enter a name: ");
+scanf(str);
+insert(str);
+printf("Would you like to enter another name (y/n):  ");
 
-  // print inorder traversal of the BST
-  inorder(root);
+ while((a = getchar()) == 'y'){
 
-  return 0;
-	     
+  fflush(stdin);
+  printf("Please enter a name: ");
+  scanf(str);
+  insert(str);
+
+  printf("Would you like to enter another name (y/n):  ");
+  scanf("%c", &a);
+  }
+
+//Display tree
+
+  display(root);
+
+return 0;
 
 }
