@@ -16,14 +16,15 @@ In addition, it provides an exit option to finish the program.
 This folder contains the following files: Sosa-Isaias-PMS.c, BSTree.h, BST.c, and Makefile.
 
 TO COMPILE:
+First:
 
- $make
-To test it, try:
+ $make clean
+Second:
 
-$ make Sosa-Isaias-PMS
-To delete binaries:
+$ make demo
+Third
 
-$ make clean
+$make clean  (To delete binaries)
 
 
 
