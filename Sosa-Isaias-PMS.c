@@ -22,15 +22,17 @@ int flag = 1;
 void main(){
 
   FILE *fptr;           //To open a file
-  char filename[20];    //To store the name of the file
-  char c;                //To store each number of the file
+  char filename[20];    //To store the name of the file being read
+  char line[50];        //To store each line read from the file being read
+  char c;               //To store each number of the file
   int ch;               
 
   printf("\nOperations ---:");
   printf("\n1 - Insert an element into tree\n");
-  printf("2 - Inorder traversal\n");
-  printf("3 - Exit\n");
+  printf("2 - Delete an element from the tree\n");
+  printf("3 - Inorder traversal\n");
   printf("4 - Read from a file\n");
+  printf("5 - Exit\n");
 
   while(1){
     
@@ -43,11 +45,11 @@ void main(){
       break;
 
     case 2:
-      inorder(root);
+      delete();
       break;
 
     case 3:
-      exit(0);
+      inorder(root);
       break;
 
     case 4:
@@ -65,15 +67,19 @@ void main(){
 	
       }
 
-      //Reading the file line by line and adding
-      c = fgetc(fptr);
-      while(c != EOF){
+      //Reading the file line by line and inserting to Binary Search Tree
+      fscanf(fptr, "%[^\n]", line);
+      while(line){
 
-	printf("%c", c);
-	c = fgetc(fptr);
+	printf("%s", line);
+       fscanf(fptr, "%[^\n]", line);
       }
 
       fclose(fptr);
+      break;
+
+    case 5:
+      exit(0);
       break;
 
     default:
@@ -168,5 +174,175 @@ void copy(char *n[], char *s[]){
    
     } */
 
+//To delete a node
+void delete(){
 
+  char str[50];   //Store element to be removed
 
+  if(root == NULL){
+    
+    printf("No elements in the tree to be deleted");
+    return;
+  }
+
+  printf("Enter the data to be deleted: ");
+  scanf("%s", str);
+
+  t1 = root;
+  t2 = root;
+
+  searchD(root, str);
+  
+}
+
+//Search for the node to be deleted
+void searchD(struct node *t, char s[]){
+
+  if(strcmp(s, t->name) > 0){
+
+    t1 = t;
+    searchD(t->right, s);
+  }
+
+  else if(strcmp(s, t->name) < 0){
+
+    t1 = t;
+    searchD(t->right, s);
+  }
+
+  else if(strcmp(s, t->name) == 0){
+
+    deleteT(t);
+  }
+}
+
+// Delete the found node, and rearrange BST
+void deleteT(struct node *t){
+
+  char *k = (char *)malloc(sizeof(char) * 50);
+  int i = 0;
+
+  //Deleting leaf node
+  if((t->left == NULL) && (t->right == NULL)){
+
+    if(t1->left == t){
+
+      t1->left = NULL;
+    }
+    else{
+      t->right = NULL;
+    }
+
+    t = NULL;
+    free(t);
+    return;
+    
+  }
+
+  //To delete a node that has a left child node
+  else if(t->right == NULL){
+
+    if(t1 == t){
+
+      root = t->left;
+      t1 = root;
+      
+    }
+    else if(t1->left == t){
+
+      t1->left = t->left;
+      
+    }
+    else{
+
+      t1->right = t->left;
+    }
+
+    t= NULL;
+    free(t);
+    return;
+
+  }
+
+  //To delete a node that has a right child node
+  else if(t->left == NULL){
+
+    if(t1 == t){
+
+      root = t->right;
+      t1 = root;
+    }
+    else if(t1->right == t){
+      t1->right = t-> right;
+    }
+    else
+      t1->left = t->right;
+
+    t == NULL;
+    free(t);
+    return;
+  }
+
+  //To delete a node having two child nodes
+  else if((t->left != NULL) && (t->right != NULL)){
+
+    t2 =root;
+    
+    if(t->right != NULL){
+
+      k = smallest(t->right);
+      flag = 1;
+      
+    }
+    else{
+
+      k = largest(t->left);
+      flag = 2;
+    }
+
+    searchD(root, k);
+
+    //Copies the elements of one array to the other
+    while((temp->name[i] != '\0') && (k[i] != '\0')){
+      temp->name[i] = k[i];
+      i++;
+    }
+
+   }
+    
+  }
+
+//To find the smallest element in the right subtree
+char*  smallest(struct node *t){
+
+  t2 = t;
+
+  if(t->left != NULL){
+
+    t2 = t;
+    return(smallest(t->left));
+  }
+  else{
+
+    return (t->name);
+  }
+     
+}
+
+//To find the largest element
+char* largest(struct node *t){
+
+  if(t->right != NULL){
+
+    t2 = t;
+    return(largest(t->right));
+
+  }
+
+  else{
+
+    return(t->name);
+
+  }
+  
+}
