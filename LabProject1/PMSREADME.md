@@ -5,7 +5,7 @@
 
 This program uses Binary Search Tree that adds and displays the information entered which are names for the personnel management system.
 
-The folder contains:
+THE FOLDER CONTAINS:
 
 1) Code that implements a Binary Search Tree and the code that runs the program.
 2) It also has a header file being use for the code
@@ -15,7 +15,7 @@ In addition, it provides an exit option to finish the program.
 
 This folder contains the following files: Sosa-Isaias-PMS.c, BSTree.h, BST.c, and Makefile.
 
-To compile:
+TO COMPILE:
 
  $make
 To test it, try:
@@ -26,12 +26,13 @@ To delete binaries:
 $ make clean
 
 
-Things to note:
+
+THINGS TO NOTE:
 
 The delete, and read from a file options do not work properly as planned.
 
 
-References:
+REFERENCES:
 
 I used code from the following source for my aid:
 
